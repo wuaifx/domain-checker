@@ -38,8 +38,9 @@ checkButton.addEventListener('click', async () => {
 document.getElementById('domain-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const domain = document.getElementById('domain-input').value;
+    const resultDiv = document.getElementById('result');
 
-    fetch('http://127.0.0.1:5000/check-domain', {
+    fetch('/api/check_domain', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -48,7 +49,6 @@ document.getElementById('domain-form').addEventListener('submit', function(event
     })
     .then(response => response.json())
     .then(data => {
-        const resultDiv = document.getElementById('result');
         if (data.error) {
             resultDiv.textContent = `Error: ${data.error}`;
         } else if (data.registered) {
@@ -59,5 +59,6 @@ document.getElementById('domain-form').addEventListener('submit', function(event
     })
     .catch(error => {
         console.error('Error:', error);
+        resultDiv.textContent = '查询失败，请稍后再试。';
     });
 });
